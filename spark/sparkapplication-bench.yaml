@@ -1,0 +1,53 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: pyspark-bench
+  namespace: default
+spec:
+  sparkConf:
+    "spark.kubernetes.submission.connectionTimeout": "60000"
+    "spark.kubernetes.submission.requestTimeout": "60000"
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: swr.af-north-1.myhuaweicloud.com/xdeng/pyspark:v9-analysis
+  mainApplicationFile: local:///opt/spark/custom/spark_benchmark.py
+  sparkVersion: "3.4.0"
+  restartPolicy:
+    type: Never
+  driver:
+    cores: 1
+    coreRequest: "100m"
+    coreLimit: "1000m"
+    memory: "1g"
+    memoryOverhead: "256m"
+    serviceAccount: spark
+    template:
+      spec:
+        volumes:
+          - name: script-volume
+            configMap:
+              name: spark-bench-script
+        containers:
+          - name: spark-kubernetes-driver
+            volumeMounts:
+              - name: script-volume
+                mountPath: /opt/spark/custom
+  executor:
+    cores: 1
+    coreRequest: "100m"
+    coreLimit: "1000m"
+    instances: 2
+    memory: "768m"
+    memoryOverhead: "128m"
+    template:
+      spec:
+        volumes:
+          - name: script-volume
+            configMap:
+              name: spark-bench-script
+        containers:
+          - name: spark-kubernetes-executor
+            volumeMounts:
+              - name: script-volume
+                mountPath: /opt/spark/custom

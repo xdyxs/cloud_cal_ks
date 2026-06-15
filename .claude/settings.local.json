@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kubectl get sc:*)",
+      "Bash(bash:*)",
+      "Bash(kubectl describe pod:*)",
+      "Bash(kubectl describe pvc:*)",
+      "Bash(kubectl apply:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl top nodes:*)",
+      "Bash(kubectl scale:*)",
+      "Bash(findstr \"applicationState\" -A 3)",
+      "Bash(Select-String -Pattern \"applicationState\" -Context 0,5)"
+    ]
+  }
+}

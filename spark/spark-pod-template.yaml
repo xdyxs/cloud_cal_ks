@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-driver-template
+  namespace: default
+data:
+  podspec: |
+    apiVersion: v1
+    kind: Pod
+    spec:
+      volumes:
+        - name: script-volume
+          configMap:
+            name: spark-analysis-script
+      containers:
+        - name: spark-kubernetes-driver
+          volumeMounts:
+            - name: script-volume
+              mountPath: /opt/spark/custom
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-executor-template
+  namespace: default
+data:
+  podspec: |
+    apiVersion: v1
+    kind: Pod
+    spec:
+      volumes:
+        - name: script-volume
+          configMap:
+            name: spark-analysis-script
+      containers:
+        - name: spark-kubernetes-executor
+          volumeMounts:
+            - name: script-volume
+              mountPath: /opt/spark/custom

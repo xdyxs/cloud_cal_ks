@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.autocreate: '{
+      "type": "public",
+      "bandwidth_name": "cce-bandwidth",
+      "bandwidth_size": 5,
+      "bandwidth_sharetype": "PER",
+      "eip_type": "5_bgp"
+    }'
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5000
+  selector:
+    app: backend

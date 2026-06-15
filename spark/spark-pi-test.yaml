@@ -1,0 +1,26 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: spark-pi
+  namespace: default
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: swr.af-north-1.myhuaweicloud.com/xdeng/pyspark:v9-analysis
+  mainApplicationFile: local:///opt/spark/examples/src/main/python/pi.py
+  sparkVersion: "3.4.0"
+  restartPolicy:
+    type: Never
+  driver:
+    cores: 1
+    coreRequest: "200m"
+    coreLimit: "1000m"
+    memory: "512m"
+    serviceAccount: spark
+  executor:
+    cores: 1
+    coreRequest: "300m"
+    coreLimit: "1000m"
+    instances: 1
+    memory: "512m"
